@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
+import KakaoScript from '@/components/KakaoScript';
 
 export const metadata: Metadata = {
   title: '퇴사각 측정기 | 나 지금 버틸 만해...?',
@@ -58,11 +59,7 @@ export default function RootLayout({
         )}
 
         {/* Kakao SDK */}
-        <Script
-          src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
+        <KakaoScript />
       </head>
       <body className="min-h-screen">
         <main className="min-h-screen flex items-center justify-center p-4">
