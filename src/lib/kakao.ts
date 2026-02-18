@@ -10,11 +10,14 @@ export const initKakao = () => {
   if (typeof window !== 'undefined' && window.Kakao) {
     if (!window.Kakao.isInitialized()) {
       const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
+      console.log('🔑 Kakao Key exists:', !!kakaoKey);
+      console.log('🌍 Current domain:', window.location.hostname);
+
       if (kakaoKey) {
         window.Kakao.init(kakaoKey);
-        console.log('Kakao SDK initialized:', window.Kakao.isInitialized());
+        console.log('✅ Kakao SDK initialized:', window.Kakao.isInitialized());
       } else {
-        console.error('Kakao JS Key is missing');
+        console.error('❌ Kakao JS Key is missing');
       }
     }
   }
@@ -49,6 +52,10 @@ export const shareToKakao = (result: Result, percentage: number) => {
   }
 
   try {
+    console.log('📤 Attempting Kakao share...');
+    console.log('SDK initialized:', window.Kakao.isInitialized());
+    console.log('Share available:', !!window.Kakao.Share);
+
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
@@ -70,8 +77,9 @@ export const shareToKakao = (result: Result, percentage: number) => {
         },
       ],
     });
+    console.log('✅ Kakao share successful');
   } catch (error) {
-    console.error('Kakao share error:', error);
+    console.error('❌ Kakao share error:', error);
     alert('공유하기에 실패했습니다. 다시 시도해주세요.');
   }
 };
