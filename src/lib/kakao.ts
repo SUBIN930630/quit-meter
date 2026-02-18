@@ -9,34 +9,55 @@ declare global {
 export const initKakao = () => {
   if (typeof window !== 'undefined' && window.Kakao) {
     if (!window.Kakao.isInitialized()) {
-      // TODO: 본인의 카카오 JavaScript 키로 교체하세요
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+      const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
+      if (kakaoKey) {
+        window.Kakao.init(kakaoKey);
+        console.log('Kakao SDK initialized:', window.Kakao.isInitialized());
+      } else {
+        console.error('Kakao JS Key is missing');
+      }
     }
   }
 };
 
 export const shareToKakao = (result: Result, percentage: number) => {
-  if (typeof window !== 'undefined' && window.Kakao) {
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: '🔥 퇴사각 측정기',
-        description: `나의 퇴사각: ${percentage}% (${result.label} ${result.emoji})\n"${result.headline}"`,
-        imageUrl: `${window.location.origin}/og-image.png`, // TODO: OG 이미지 추가
+  if (typeof window === 'undefined') return;
+  
+  // SDK 초기화 확인
+  if (!window.Kakao) {
+    alert('카카오 SDK를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+  
+  if (!window.Kakao.isInitialized()) {
+    initKakao();
+  }
+  
+  // Share 객체 확인
+  if (!window.Kakao.Share) {
+    alert('카카오톡 공유 기능을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+
+  window.Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: '🔥 퇴사각 측정기',
+      description: `나의 퇴사각: ${percentage}% (${result.label} ${result.emoji})\n"${result.headline}"`,
+      imageUrl: 'https://quit-meter-app.vercel.app/og-image.png',
+      link: {
+        mobileWebUrl: 'https://quit-meter-app.vercel.app',
+        webUrl: 'https://quit-meter-app.vercel.app',
+      },
+    },
+    buttons: [
+      {
+        title: '나도 측정하기',
         link: {
-          mobileWebUrl: window.location.origin,
-          webUrl: window.location.origin,
+          mobileWebUrl: 'https://quit-meter-app.vercel.app',
+          webUrl: 'https://quit-meter-app.vercel.app',
         },
       },
-      buttons: [
-        {
-          title: '나도 측정하기',
-          link: {
-            mobileWebUrl: window.location.origin,
-            webUrl: window.location.origin,
-          },
-        },
-      ],
-    });
-  }
+    ],
+  });
 };
