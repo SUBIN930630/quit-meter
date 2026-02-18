@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import './globals.css';
 import KakaoScript from '@/components/KakaoScript';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: '퇴사각 측정기 | 나 지금 버틸 만해...?',
@@ -12,8 +12,7 @@ export const metadata: Metadata = {
     description: '나 지금 버틸 만해...? 10문항으로 측정해보세요!',
     type: 'website',
     locale: 'ko_KR',
-    // TODO: 실제 URL로 교체
-    url: 'https://your-domain.vercel.app',
+    url: 'https://quit-meter-app.vercel.app',
     images: [
       {
         url: '/og-image.png',
@@ -22,11 +21,6 @@ export const metadata: Metadata = {
         alt: '퇴사각 측정기',
       },
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '🔥 퇴사각 측정기',
-    description: '나 지금 버틸 만해...? 10문항으로 측정해보세요!',
   },
 };
 
@@ -40,7 +34,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        {/* Google Analytics */}
         {GA_ID && (
           <>
             <Script
@@ -57,11 +50,9 @@ export default function RootLayout({
             </Script>
           </>
         )}
-
-        {/* Kakao SDK */}
-        <KakaoScript />
       </head>
       <body className="min-h-screen">
+        <KakaoScript />
         <main className="min-h-screen flex items-center justify-center p-4">
           {children}
         </main>
